@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
 import * as authorActions from '../../redux/actions/authorActions';
@@ -27,6 +28,15 @@ class CoursesPage extends Component {
 		return (
 			<>
 				<h2>Courses</h2>
+
+				<Link
+					style={{ marginBottom: 20 }}
+					className="btn btn-primary add-course"
+					to="/course"
+				>
+					Add course
+				</Link>
+
 				<CourseList courses={this.props.courses} />
 			</>
 		);
