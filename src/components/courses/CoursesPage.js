@@ -14,23 +14,29 @@ class CoursesPage extends Component {
 	componentDidMount() {
 		const { courses, authors, actions } = this.props;
 		if (!courses.length) {
-			actions.loadCourses().catch(error => {
+			try {
+				actions.loadCourses();
+			} catch (error) {
 				console.log(`Loading courses failed: ${error}`);
-			});
+			}
 		}
 
 		if (!authors.length) {
-			actions.loadAuthors().catch(error => {
+			try {
+				actions.loadAuthors();
+			} catch (error) {
 				console.log(`Loading courses failed: ${error}`);
-			});
+			}
 		}
 	}
 
-	handleDeleteCourse = course => {
+	handleDeleteCourse = async course => {
 		toast.success('Course deleted!');
-		this.props.actions.deleteCourse(course).catch(error => {
+		try {
+			await this.props.actions.deleteCourse(course);
+		} catch (error) {
 			toast.error(`Delete failed! ${error.message}`, { autoClose: false });
-		});
+		}
 	};
 
 	render() {

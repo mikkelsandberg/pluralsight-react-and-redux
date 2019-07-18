@@ -22,19 +22,31 @@ const ManageCoursePage = ({
 	const [errors, setErrors] = useState({});
 	const [saving, setSaving] = useState(false);
 
+	async function getCourses() {
+		try {
+			await loadCourses();
+		} catch (error) {
+			console.log(`Loading courses failed: ${error}`);
+		}
+	}
+
+	async function getAuthors() {
+		try {
+			await loadAuthors();
+		} catch (error) {
+			console.log(`Loading courses failed: ${error}`);
+		}
+	}
+
 	useEffect(() => {
 		if (!courses?.length) {
-			loadCourses().catch(error => {
-				console.log(`Loading courses failed: ${error}`);
-			});
+			getCourses();
 		} else {
 			setCourse({ ...props.course });
 		}
 
 		if (!authors?.length) {
-			loadAuthors().catch(error => {
-				console.log(`Loading courses failed: ${error}`);
-			});
+			getAuthors();
 		}
 	}, [props.course]);
 
@@ -59,19 +71,21 @@ const ManageCoursePage = ({
 		return Object.keys(errors).length === 0;
 	}
 
-	function handleSave(e) {
+	async function handleSave(e) {
 		e.preventDefault();
+
 		if (!formIsValid()) return;
+
 		setSaving(true);
-		saveCourse(course)
-			.then(() => {
-				toast.success('Course saved!');
-				history.push('/courses');
-			})
-			.catch(error => {
-				setSaving(false);
-				setErrors({ onSave: error.message });
-			});
+
+		try {
+			await saveCourse(course);
+			toast.success('Course saved!');
+			history.push('/courses');
+		} catch (error) {
+			setSaving(false);
+			setErrors({ onSave: error.message });
+		}
 	}
 
 	return authors.length === 0 || courses.length === 0 ? (

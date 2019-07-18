@@ -19,34 +19,31 @@ export function deleteCourseOptimistic(course) {
 }
 
 export function loadCourses() {
-	return function(dispatch) {
+	return async function(dispatch) {
 		dispatch(beginApiCall());
-		return courseApi
-			.getCourses()
-			.then(courses => {
-				dispatch(loadCoursesSuccess(courses));
-			})
-			.catch(error => {
-				dispatch(apiCallError(error));
-				throw error;
-			});
+		try {
+			const courses = await courseApi.getCourses();
+			dispatch(loadCoursesSuccess(courses));
+		} catch (error) {
+			dispatch(apiCallError(error));
+			throw error;
+		}
 	};
 }
 
 export function saveCourse(course) {
-	return function(dispatch) {
+	return async function(dispatch) {
 		dispatch(beginApiCall());
-		return courseApi
-			.saveCourse(course)
-			.then(savedCourse => {
-				course.id
-					? dispatch(updateCourseSuccess(savedCourse))
-					: dispatch(createCourseSuccess(savedCourse));
-			})
-			.catch(error => {
-				dispatch(apiCallError(error));
-				throw error;
-			});
+
+		try {
+			const savedCourse = await courseApi.saveCourse(course);
+			course.id
+				? dispatch(updateCourseSuccess(savedCourse))
+				: dispatch(createCourseSuccess(savedCourse));
+		} catch (error) {
+			dispatch(apiCallError(error));
+			throw error;
+		}
 	};
 }
 
