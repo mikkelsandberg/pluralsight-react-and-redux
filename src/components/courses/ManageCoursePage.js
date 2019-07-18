@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { newCourse } from '../../../tools/mockData';
 import { loadAuthors } from '../../redux/actions/authorActions';
@@ -19,6 +20,7 @@ const ManageCoursePage = ({
 }) => {
 	const [course, setCourse] = useState({ ...props.course });
 	const [errors, setErrors] = useState({});
+	const [saving, setSaving] = useState(false);
 
 	useEffect(() => {
 		if (!courses?.length) {
@@ -46,7 +48,9 @@ const ManageCoursePage = ({
 
 	function handleSave(e) {
 		e.preventDefault();
+		setSaving(true);
 		saveCourse(course).then(() => {
+			toast.success('Course saved!');
 			history.push('/courses');
 		});
 	}
@@ -60,6 +64,7 @@ const ManageCoursePage = ({
 			errors={errors}
 			onChange={handleChange}
 			onSave={handleSave}
+			saving={saving}
 		/>
 	);
 };
