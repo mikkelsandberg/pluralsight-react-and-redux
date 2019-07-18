@@ -11,7 +11,10 @@ export default function apiStatusReducer(
 ) {
 	if (action.type === types.BEGIN_API_CALL) {
 		return apiStatusState + 1;
-	} else if (actionTypeEndsInSuccess(action.type)) {
+	} else if (
+		action.type === types.API_CALL_ERROR ||
+		actionTypeEndsInSuccess(action.type)
+	) {
 		return apiStatusState - 1;
 	}
 	return apiStatusState;
