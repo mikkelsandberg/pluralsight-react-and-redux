@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import * as authorActions from '../../redux/actions/authorActions';
 import * as courseActions from '../../redux/actions/courseActions';
+import Spinner from '../common/Spinner';
 import CourseList from './CourseList';
 
 class CoursesPage extends Component {
@@ -28,6 +29,8 @@ class CoursesPage extends Component {
 		return (
 			<>
 				<h2>Courses</h2>
+
+				<Spinner />
 
 				<Link
 					style={{ marginBottom: 20 }}
