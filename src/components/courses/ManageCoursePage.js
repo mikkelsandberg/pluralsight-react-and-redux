@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { newCourse } from '../../../tools/mockData';
 import { loadAuthors } from '../../redux/actions/authorActions';
 import { loadCourses, saveCourse } from '../../redux/actions/courseActions';
+import Spinner from '../common/Spinner';
 import CourseForm from './CourseForm';
 
 const ManageCoursePage = ({
@@ -50,7 +51,9 @@ const ManageCoursePage = ({
 		});
 	}
 
-	return (
+	return authors.length === 0 || courses.length === 0 ? (
+		<Spinner />
+	) : (
 		<CourseForm
 			course={course}
 			authors={authors}

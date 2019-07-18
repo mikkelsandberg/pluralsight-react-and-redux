@@ -30,17 +30,21 @@ class CoursesPage extends Component {
 			<>
 				<h2>Courses</h2>
 
-				<Spinner />
+				{this.props.loading ? (
+					<Spinner />
+				) : (
+					<>
+						<Link
+							style={{ marginBottom: 20 }}
+							className="btn btn-primary add-course"
+							to="/course"
+						>
+							Add course
+						</Link>
 
-				<Link
-					style={{ marginBottom: 20 }}
-					className="btn btn-primary add-course"
-					to="/course"
-				>
-					Add course
-				</Link>
-
-				<CourseList courses={this.props.courses} />
+						<CourseList courses={this.props.courses} />
+					</>
+				)}
 			</>
 		);
 	}
@@ -49,26 +53,32 @@ class CoursesPage extends Component {
 CoursesPage.propTypes = {
 	courses: PropTypes.array.isRequired,
 	authors: PropTypes.array.isRequired,
-	actions: PropTypes.object.isRequired
+	actions: PropTypes.object.isRequired,
+	loading: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = state => ({
-	courses: state.courses.map(course => {
-		return {
-			...course,
-			authorName: state.authors?.find(author => author.id === course.authorId)
-				?.name
-		};
-	}),
-	authors: state.authors
-});
+function mapStateToProps(state) {
+	return {
+		courses: state.courses.map(course => {
+			return {
+				...course,
+				authorName: state.authors?.find(author => author.id === course.authorId)
+					?.name
+			};
+		}),
+		authors: state.authors,
+		loading: state.apiCallsInProgress > 0
+	};
+}
 
-const mapDispatchToProps = dispatch => ({
-	actions: {
-		loadCourses: bindActionCreators(courseActions.loadCourses, dispatch),
-		loadAuthors: bindActionCreators(authorActions.loadAuthors, dispatch)
-	}
-});
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: {
+			loadCourses: bindActionCreators(courseActions.loadCourses, dispatch),
+			loadAuthors: bindActionCreators(authorActions.loadAuthors, dispatch)
+		}
+	};
+}
 
 export default connect(
 	mapStateToProps,
