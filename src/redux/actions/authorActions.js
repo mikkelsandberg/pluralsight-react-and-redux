@@ -1,18 +1,21 @@
 import * as authorApi from '../../api/authorApi';
 import * as types from './actionTypes';
+import { beginApiCall } from './apiStatusActions';
 
-export const loadAuthorsSuccess = authors => ({
-	type: types.LOAD_AUTHORS_SUCCESS,
-	authors
-});
+export function loadAuthorsSuccess(authors) {
+	return { type: types.LOAD_AUTHORS_SUCCESS, authors };
+}
 
-export const loadAuthors = () => {
-	return async dispatch => {
-		try {
-			const authors = await authorApi.getAuthors();
-			dispatch(loadAuthorsSuccess(authors));
-		} catch (error) {
-			throw error;
-		}
+export function loadAuthors() {
+	return function(dispatch) {
+		dispatch(beginApiCall());
+		return authorApi
+			.getAuthors()
+			.then(authors => {
+				dispatch(loadAuthorsSuccess(authors));
+			})
+			.catch(error => {
+				throw error;
+			});
 	};
-};
+}
