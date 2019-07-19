@@ -9,7 +9,7 @@ import { loadCourses, saveCourse } from '../../redux/actions/courseActions';
 import Spinner from '../common/Spinner';
 import CourseForm from './CourseForm';
 
-const ManageCoursePage = ({
+function ManageCoursePage({
 	courses,
 	authors,
 	loadAuthors,
@@ -17,7 +17,7 @@ const ManageCoursePage = ({
 	saveCourse,
 	history,
 	...props
-}) => {
+}) {
 	const [course, setCourse] = useState({ ...props.course });
 	const [errors, setErrors] = useState({});
 	const [saving, setSaving] = useState(false);
@@ -100,7 +100,7 @@ const ManageCoursePage = ({
 			saving={saving}
 		/>
 	);
-};
+}
 
 ManageCoursePage.propTypes = {
 	course: PropTypes.object.isRequired,
