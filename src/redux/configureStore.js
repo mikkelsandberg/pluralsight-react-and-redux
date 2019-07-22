@@ -1,15 +1,6 @@
-import { applyMiddleware, compose, createStore } from 'redux';
-import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
-import thunk from 'redux-thunk';
-
-import rootReducer from './reducers';
-
-export default function configureStore(initialState) {
-	const composeEnhancers =
-		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for redux devtools
-	return createStore(
-		rootReducer,
-		initialState,
-		composeEnhancers(applyMiddleware(thunk, reduxImmutableStateInvariant()))
-	);
+// Use CommonJS require so we can dynamically import at build time
+if (process.env.NODE_ENV === 'production') {
+	module.exports = require('./configureStore.prod');
+} else {
+	module.exports = require('./configureStore.dev');
 }
