@@ -1,5 +1,5 @@
 {
 	"editor.formatOnSave": true,
-	"typescriptHero.imports.organizeOnSave": true,
-	"javascript.validate.enable": false
+	"javascript.validate.enable": false,
+	"typescriptHero.imports.disableImportRemovalOnOrganize": true
 }

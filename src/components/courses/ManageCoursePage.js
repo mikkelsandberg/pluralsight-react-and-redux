@@ -9,7 +9,7 @@ import { loadCourses, saveCourse } from '../../redux/actions/courseActions';
 import Spinner from '../common/Spinner';
 import CourseForm from './CourseForm';
 
-function ManageCoursePage({
+export function ManageCoursePage({
 	courses,
 	authors,
 	loadAuthors,
